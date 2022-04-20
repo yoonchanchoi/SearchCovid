@@ -17,6 +17,7 @@ class CovidViewModel(private val repo: CovidRepository) :ViewModel(){
     private val _liveCovidVo: MutableLiveData<ArrayList<CovidVO?>> = MutableLiveData()
     private val _liveStateVo: MutableLiveData<StateVO> = MutableLiveData()
     private val _liveToast: MutableLiveData<String> = MutableLiveData()
+//    private val _searchCovidVo: MutableLiveData<ArrayList<CovidVO?>> = MutableLiveData()
 
     val liveCovidVo: LiveData<ArrayList<CovidVO?>>
         get() = _liveCovidVo
@@ -24,6 +25,8 @@ class CovidViewModel(private val repo: CovidRepository) :ViewModel(){
         get() = _liveStateVo
     val liveToast: LiveData<String>
         get() = _liveToast
+//    val searchCovidVo: LiveData<ArrayList<CovidVO>>
+//        get() = _searchCovidVo
 
     fun getAll(key: String){
         repo.getCovidInfo(key).enqueue(object : Callback<StateVO>{
@@ -63,6 +66,51 @@ class CovidViewModel(private val repo: CovidRepository) :ViewModel(){
         })
 
 
+    }
+
+    fun getSearch(key: String,str: String){
+        repo.getCovidInfo(key).enqueue(object : Callback<StateVO>{
+            override fun onResponse(call: Call<StateVO>, response: Response<StateVO>) {
+                val searchList = ArrayList<CovidVO>()
+                val regionList = arrayListOf(
+                    response.body()?.korea,
+                    response.body()?.seoul,
+                    response.body()?.busan,
+                    response.body()?.incheon,
+                    response.body()?.gwangju,
+                    response.body()?.jeonbuk,
+                    response.body()?.chungbuk,
+                    response.body()?.jeonnam,
+                    response.body()?.gyeongbuk,
+                    response.body()?.daegu,
+                    response.body()?.ulsan,
+                    response.body()?.daejeon,
+                    response.body()?.sejong,
+                    response.body()?.chungnam,
+                    response.body()?.gyeonggi,
+                    response.body()?.gyeongnam,
+                    response.body()?.gangwon,
+                    response.body()?.jeju,
+                    response.body()?.quarantine
+                )
+                Log.d("성공성공!", regionList.toString())
+                regionList.forEach {
+                    if(it?.countryName==str){
+                        searchList.add(it)
+                    }
+                }
+
+                _liveCovidVo.postValue(searchList)
+
+            }
+
+            override fun onFailure(call: Call<StateVO>, t: Throwable) {
+                Log.d("실패실패..", "${t.localizedMessage.toString()}")
+                Log.d("실패실패..", "${t.message.toString()}")
+                _liveToast.postValue(t.localizedMessage)
+            }
+
+        })
     }
 
 }

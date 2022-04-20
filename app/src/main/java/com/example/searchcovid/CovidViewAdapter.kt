@@ -1,14 +1,17 @@
 package com.example.mvvmretrofit
 
+import android.content.Context
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.Filter
 import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
 import com.example.searchcovid.R
+import java.util.*
+import kotlin.collections.ArrayList
 
 class CovidViewAdapter: RecyclerView.Adapter<CovidViewAdapter.CovidHolder?>() {
-
     private val covidList: ArrayList<CovidVO?> = arrayListOf()
 
     fun setList(covidList: ArrayList<CovidVO?>){
@@ -48,4 +51,19 @@ class CovidViewAdapter: RecyclerView.Adapter<CovidViewAdapter.CovidHolder?>() {
         var txtNewFCase: TextView = itemView.findViewById(R.id.tv_newf)
         var txtNewCCase: TextView = itemView.findViewById(R.id.tv_newc)
     }
+
+
+// 검색
+//    override fun filter(charText: String){
+//        var charText = charText.toLowerCase(Locale.getDefault())
+//        covidList.clear()
+//        if(charText.length == 0){
+//            covidList.addAll(covidList)
+//        }else{
+//            covidList.forEach{
+//                val name= context
+//            }
+//        }
+//
+//    }
 }
