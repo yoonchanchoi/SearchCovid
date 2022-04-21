@@ -30,9 +30,10 @@ class MainActivity : AppCompatActivity() {
         binding = DataBindingUtil.setContentView(this, R.layout.activity_main)
         covidViewModel = ViewModelProvider(this, viewModelFactory).get(CovidViewModel::class.java)
 //        covidViewModel.getAll(CovidApi.TOKEN)
-//        initAdapter()
-//        observeCovidList()
         search()
+        initAdapter()
+        observeCovidList()
+
     }
 
     private fun initAdapter() {
@@ -54,12 +55,8 @@ class MainActivity : AppCompatActivity() {
             override fun onTextChanged(charSequence: CharSequence?, start: Int, before: Int, count: Int) {
                 if(binding.etSearch.length()==0){
                     covidViewModel.getAll(CovidApi.TOKEN)
-                    initAdapter()
-                    observeCovidList()
                 }else{
                     covidViewModel.getSearch(CovidApi.TOKEN,binding.etSearch.toString())
-                    initAdapter()
-                    observeCovidList()
                 }
             }
             override fun afterTextChanged(edit: Editable?) {

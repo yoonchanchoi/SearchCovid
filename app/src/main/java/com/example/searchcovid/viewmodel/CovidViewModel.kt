@@ -71,7 +71,7 @@ class CovidViewModel(private val repo: CovidRepository) :ViewModel(){
     fun getSearch(key: String,str: String){
         repo.getCovidInfo(key).enqueue(object : Callback<StateVO>{
             override fun onResponse(call: Call<StateVO>, response: Response<StateVO>) {
-                val searchList = ArrayList<CovidVO>()
+                val searchList = ArrayList<CovidVO?>()
                 val regionList = arrayListOf(
                     response.body()?.korea,
                     response.body()?.seoul,
@@ -94,14 +94,13 @@ class CovidViewModel(private val repo: CovidRepository) :ViewModel(){
                     response.body()?.quarantine
                 )
                 Log.d("성공성공!", regionList.toString())
+
                 regionList.forEach {
                     if(it?.countryName==str){
                         searchList.add(it)
                     }
                 }
-
                 _liveCovidVo.postValue(searchList)
-
             }
 
             override fun onFailure(call: Call<StateVO>, t: Throwable) {
